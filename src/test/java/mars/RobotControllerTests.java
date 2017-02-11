@@ -31,22 +31,25 @@ import org.springframework.test.web.servlet.MockMvc;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class GreetingControllerTests {
+public class RobotControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
+    public void noCommandRobotShouldReturnInitialPosition() throws Exception {
 
-        this.mockMvc.perform(get("/greeting/World")).andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").value("Hello, World!"));
+        this.mockMvc.perform(get("/mars"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.command").value(""))
+			.andExpect(jsonPath("$.destination").value("(0, 0, N)"));
     }
 
     @Test
-    public void paramGreetingShouldReturnTailoredMessage() throws Exception {
+    public void paramRobotShouldReturnTailoredMessage() throws Exception {
 
-        this.mockMvc.perform(get("/greeting/Spring Community"))
+        this.mockMvc.perform(get("/mars/Spring Community"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.content").value("Hello, Spring Community!"));
     }
