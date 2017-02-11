@@ -1,0 +1,9 @@
+# vim swap files
+.*.swp
+
+# gradle wrapper cache
+.gradle
+
+# build artifacts
+build
+
