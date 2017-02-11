@@ -17,6 +17,7 @@ package mars;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,9 +38,9 @@ public class RobotControllerTests {
     private MockMvc mockMvc;
 
     @Test
-    public void noCommandRobotShouldReturnInitialPosition() throws Exception {
-
-        this.mockMvc.perform(get("/mars"))
+    public void noCommandRobotGetShouldReturnInitialPosition() throws Exception {
+        this.mockMvc
+			.perform(get("/rest/mars"))
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.command").value(""))
@@ -47,11 +48,21 @@ public class RobotControllerTests {
     }
 
     @Test
-    public void paramRobotShouldReturnTailoredMessage() throws Exception {
+    public void noCommandRobotPostShouldReturnInitialPosition() throws Exception {
+        this.mockMvc
+			.perform(post("/rest/mars"))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.command").value(""))
+			.andExpect(jsonPath("$.destination").value("(0, 0, N)"));
+    }
 
-        this.mockMvc.perform(get("/mars/Spring Community"))
-                .andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").value("Hello, Spring Community!"));
+    @Test
+    public void commandRobotGetShouldReturnMethodNotAllowed() throws Exception {
+        this.mockMvc
+			.perform(get("/rest/mars/M"))
+			.andDo(print())
+			.andExpect(status().isMethodNotAllowed());
     }
 
 }
