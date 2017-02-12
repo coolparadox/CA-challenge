@@ -18,16 +18,18 @@ package mars;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -38,30 +40,68 @@ public class RobotControllerTests {
     private MockMvc mockMvc;
 
     @Test
-    public void noCommandRobotGetShouldReturnInitialPosition() throws Exception {
+    public void getRobotShouldReturnInitialPosition() throws Exception {
         this.mockMvc
 			.perform(get("/rest/mars"))
-			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.command").value(""))
-			.andExpect(jsonPath("$.destination").value("(0, 0, N)"));
+			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
+			.andExpect(content().string("(0, 0, N)"));
     }
 
     @Test
-    public void noCommandRobotPostShouldReturnInitialPosition() throws Exception {
+    public void postRobotShouldReturnInitialPosition() throws Exception {
         this.mockMvc
 			.perform(post("/rest/mars"))
-			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.command").value(""))
-			.andExpect(jsonPath("$.destination").value("(0, 0, N)"));
+			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
+			.andExpect(content().string("(0, 0, N)"));
     }
 
     @Test
-    public void commandRobotGetShouldReturnMethodNotAllowed() throws Exception {
+    public void getRobotCommandShouldReturnMethodNotAllowed() throws Exception {
         this.mockMvc
 			.perform(get("/rest/mars/M"))
-			.andDo(print())
+			.andExpect(status().isMethodNotAllowed());
+    }
+
+    @Test
+    public void testMoveWithRightRotation() throws Exception {
+        this.mockMvc
+			.perform(post("/rest/mars/MMRMMRMM"))
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
+			.andExpect(content().string("(2, 0, S)"));
+    }
+
+    @Test
+    public void testMoveWithLeftRotation() throws Exception {
+        this.mockMvc
+			.perform(post("/rest/mars/MML"))
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
+			.andExpect(content().string("(0, 2, W)"));
+    }
+
+    @Test
+    public void testMoveWithLeftRotationRepeated() throws Exception {
+        this.mockMvc
+			.perform(post("/rest/mars/MML"))
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
+			.andExpect(content().string("(0, 2, W)"));
+    }
+
+    @Test
+    public void testInvalidCommand() throws Exception {
+        this.mockMvc
+			.perform(get("/rest/mars/AAA"))
+			.andExpect(status().isMethodNotAllowed());
+    }
+
+    @Test
+    public void testInvalidPosition() throws Exception {
+        this.mockMvc
+			.perform(get("/rest/mars/MMMMMMMMMMMMMMMMMMMMMMMM"))
 			.andExpect(status().isMethodNotAllowed());
     }
 
