@@ -2,17 +2,28 @@ package mars;
 
 public class Robot {
 
-	private final String command;
+	private int posX;
+	private int posY;
+	private int orientation;
+	private boolean isLost;
 
-    public Robot(String command) {
-        this.command = command;
+    public Robot() {
+		this.posX = 0;
+		this.posY = 0;
+		this.orientation = 0;
+		this.isLost = false;
     }
 
-	public String getCommand() {
-		return command;
+	public boolean isLost() {
+		return this.isLost;
 	}
 
-	public String getDestination() {
+	public String getPosition() {
 		return "(0, 0, N)";
 	}
+
+	void execute(String command) {
+		isLost = true;
+	}
+
 }

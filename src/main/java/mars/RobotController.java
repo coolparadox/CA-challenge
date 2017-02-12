@@ -2,31 +2,33 @@ package mars;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class RobotController {
 
-    @PostMapping("/rest/mars")
-    public @ResponseBody Robot robotPostEmpty() {
-        return new Robot("");
+    @RequestMapping(path="/rest/mars", method=RequestMethod.GET, produces="text/plain")
+    public @ResponseBody String robotPostEmptyCommand() {
+        return new Robot().getPosition();
     }
 
-    @GetMapping("/rest/mars")
-    public @ResponseBody Robot robotGetEmpty() {
-        return new Robot("");
+    @RequestMapping(path="/rest/mars", method=RequestMethod.POST, produces="text/plain")
+    public @ResponseBody String robotGetEmptyCommand() {
+        return new Robot().getPosition();
     }
 
-    @PostMapping("/rest/mars/{command}")
-    public @ResponseBody ResponseEntity<Robot> robotPostCommand(@PathVariable(value="command") final String command) {
-		if (command.equals("X"))
+    @RequestMapping(path="/rest/mars/{command}", method=RequestMethod.POST, produces="text/plain")
+    public @ResponseBody ResponseEntity<String> robotPostCommand(@PathVariable(value="command") final String command) {
+		Robot robot = new Robot();
+		robot.execute(command);
+		if (robot.isLost())
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		else
-			return ResponseEntity.ok(new Robot(command));
+			return ResponseEntity.ok(robot.getPosition());
     }
 
 }
