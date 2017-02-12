@@ -2,20 +2,40 @@ package mars;
 
 public class Robot {
 
-	private int posX;
-	private int posY;
-	private int orientation;
-	private boolean isLost;
+	private boolean mIsLost;
+	private int mPosX;
+	private int mPosY;
+	private Orientation mOrientation;
+
+	private enum Orientation {
+
+		NORTH {
+		},
+
+		SOUTH {
+		},
+
+		EAST {
+		},
+
+		WEST {
+		};
+
+		abstract public void move(Robot parent);
+		abstract public void left(Robot parent);
+		abstract public void right(Robot parent);
+
+	}
 
     public Robot() {
-		this.posX = 0;
-		this.posY = 0;
-		this.orientation = 0;
-		this.isLost = false;
+		mPosX = 0;
+		mPosY = 0;
+		mOrientation = Orientation.NORTH;
+		mIsLost = false;
     }
 
 	public boolean isLost() {
-		return this.isLost;
+		return mIsLost;
 	}
 
 	public String getPosition() {
@@ -23,7 +43,7 @@ public class Robot {
 	}
 
 	void execute(String command) {
-		isLost = true;
+		mIsLost = true;
 	}
 
 }

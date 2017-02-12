@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class RobotController {
 
     @RequestMapping(path="/rest/mars", method=RequestMethod.GET, produces="text/plain")
-    public @ResponseBody String robotPostEmptyCommand() {
+    public @ResponseBody String robotPostNoCommand() {
         return new Robot().getPosition();
     }
 
     @RequestMapping(path="/rest/mars", method=RequestMethod.POST, produces="text/plain")
-    public @ResponseBody String robotGetEmptyCommand() {
+    public @ResponseBody String robotGetNoCommand() {
         return new Robot().getPosition();
     }
 
