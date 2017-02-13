@@ -94,15 +94,79 @@ public class RobotControllerTests {
     @Test
     public void testInvalidCommand() throws Exception {
         this.mockMvc
-			.perform(get("/rest/mars/AAA"))
-			.andExpect(status().isMethodNotAllowed());
+			.perform(post("/rest/mars/AAA"))
+			.andExpect(status().isBadRequest());
     }
 
     @Test
     public void testInvalidPosition() throws Exception {
         this.mockMvc
-			.perform(get("/rest/mars/MMMMMMMMMMMMMMMMMMMMMMMM"))
-			.andExpect(status().isMethodNotAllowed());
+			.perform(post("/rest/mars/MMMMMMMMMMMMMMMMMMMMMMMM"))
+			.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testCrossNorthBoundary() throws Exception {
+        this.mockMvc
+			.perform(post("/rest/mars/MMMMM"))
+			.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testCrossWestBoundary() throws Exception {
+        this.mockMvc
+			.perform(post("/rest/mars/RMMMMM"))
+			.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testCrossEastBoundary() throws Exception {
+        this.mockMvc
+			.perform(post("/rest/mars/LM"))
+			.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testCrossSouthBoundary() throws Exception {
+        this.mockMvc
+			.perform(post("/rest/mars/LLM"))
+			.andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void test360RightTurn() throws Exception {
+        this.mockMvc
+			.perform(post("/rest/mars/RRRR"))
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
+			.andExpect(content().string("(0, 0, N)\n"));
+    }
+
+    @Test
+    public void test360LeftTurn() throws Exception {
+        this.mockMvc
+			.perform(post("/rest/mars/LLLL"))
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
+			.andExpect(content().string("(0, 0, N)\n"));
+    }
+
+    @Test
+    public void testReachNorthEastByDiagonal() throws Exception {
+        this.mockMvc
+			.perform(post("/rest/mars/MRMLMRMLMRMLMRM"))
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
+			.andExpect(content().string("(4, 4, E)\n"));
+    }
+
+    @Test
+    public void testFrontierWalk() throws Exception {
+        this.mockMvc
+			.perform(post("/rest/mars/MMMMRMMMMRMMMMRMMMM"))
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
+			.andExpect(content().string("(0, 0, W)\n"));
     }
 
 }

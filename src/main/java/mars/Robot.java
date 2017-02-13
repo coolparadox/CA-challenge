@@ -161,7 +161,7 @@ public class Robot {
 	}
 
 	// Constructor.
-	// Robot is initialized at position (0, 0) (left bottom) facing North.
+	// Robot is initialized at position (0, 0) (SouthWest) facing North.
     public Robot() {
 		mPosX = 0;
 		mPosY = 0;
