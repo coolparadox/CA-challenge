@@ -8,6 +8,9 @@ To build and test:
 To run:
 ./gradlew bootRun
 
+To run, alternatively:
+java -jar build/libs/contaazul-mars-robot-0.1.0.jar
+
 It runs a local http server listening on port 8080. Endpoint is /rest/mars/
 
 For online help:
