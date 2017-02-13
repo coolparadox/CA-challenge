@@ -14,7 +14,7 @@ For online help:
 curl -s --request GET http://localhost:8080/rest/mars
 
 For issuing commands:
-curl -s --request GET http://localhost:8080/rest/mars/[COMMAND]
+curl -s --request POST http://localhost:8080/rest/mars/[COMMAND]
 
 See online help for COMMAND description.
 
