@@ -40,15 +40,6 @@ public class RobotControllerTests {
     private MockMvc mockMvc;
 
     @Test
-    public void getRobotShouldReturnInitialPosition() throws Exception {
-        this.mockMvc
-			.perform(get("/rest/mars"))
-			.andExpect(status().isOk())
-			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
-			.andExpect(content().string("(0, 0, N)\n"));
-    }
-
-    @Test
     public void postRobotShouldReturnInitialPosition() throws Exception {
         this.mockMvc
 			.perform(post("/rest/mars"))
