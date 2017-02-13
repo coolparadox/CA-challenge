@@ -4,6 +4,3 @@
 # gradle wrapper cache
 .gradle
 
-# build artifacts
-build
-
