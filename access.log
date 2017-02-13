@@ -1,0 +1,41 @@
+$ curl -s --request GET http://localhost:8080/rest/mars
+Interface REST - Robô Marte ContaAzul
+
+Método: POST
+
+Comandos reconhecidos:
+- 'M' (move uma posição para frente)
+- 'L' (gira 90 graus para a esquerda)
+- 'R' (gira 90 graus para a direita)
+
+Os comandos podem ser concatenados em sequência, ex: MMRM
+
+A cada acesso um novo robô é inicializado na posição (0, 0) (sudoeste) do mapa,
+voltado para o norte. O tamanho do mapa é 5 x 5 posições.
+
+Após a execução dos comandos, é retornada a posição e orientação atuais do robô.
+
+Comandos desconhecidos não são permitidos.
+Sequências de comandos que levem o robô para fora do mapa não são permitidas.
+
+Rafael Lorandi
+http://github.com/coolparadox
+
+$ curl -s --request POST http://localhost:8080/rest/mars
+(0, 0, N)
+
+$ curl -s --request POST http://localhost:8080/rest/mars/M
+(0, 1, N)
+
+$ curl -s --request POST http://localhost:8080/rest/mars/MRML
+(1, 1, N)
+
+$ curl -s --request POST http://localhost:8080/rest/mars/MRMLL
+(1, 1, W)
+
+$ curl -s --request POST http://localhost:8080/rest/mars/MRMLLMMM
+Bad Request
+
+$ curl -s --request POST http://localhost:8080/rest/mars/MX
+Bad Request
+
