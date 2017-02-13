@@ -176,7 +176,7 @@ public class Robot {
 
 	// Answer a string representation of robot's position and orientation.
 	public String getPosition() {
-		return "(" + mPosX + ", " + mPosY + ", " + mOrientation.toString() + ")";
+		return "(" + mPosX + ", " + mPosY + ", " + mOrientation.toString() + ")\n";
 	}
 
 	// Execute a sequence of move and turn commands.

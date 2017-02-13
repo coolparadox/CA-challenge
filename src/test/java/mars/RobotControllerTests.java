@@ -45,7 +45,7 @@ public class RobotControllerTests {
 			.perform(get("/rest/mars"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
-			.andExpect(content().string("(0, 0, N)"));
+			.andExpect(content().string("(0, 0, N)\n"));
     }
 
     @Test
@@ -54,7 +54,7 @@ public class RobotControllerTests {
 			.perform(post("/rest/mars"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
-			.andExpect(content().string("(0, 0, N)"));
+			.andExpect(content().string("(0, 0, N)\n"));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class RobotControllerTests {
 			.perform(post("/rest/mars/MMRMMRMM"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
-			.andExpect(content().string("(2, 0, S)"));
+			.andExpect(content().string("(2, 0, S)\n"));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class RobotControllerTests {
 			.perform(post("/rest/mars/MML"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
-			.andExpect(content().string("(0, 2, W)"));
+			.andExpect(content().string("(0, 2, W)\n"));
     }
 
     @Test
@@ -88,7 +88,7 @@ public class RobotControllerTests {
 			.perform(post("/rest/mars/MML"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
-			.andExpect(content().string("(0, 2, W)"));
+			.andExpect(content().string("(0, 2, W)\n"));
     }
 
     @Test
