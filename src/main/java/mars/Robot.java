@@ -2,11 +2,11 @@ package mars;
 
 public class Robot {
 
-	// Hardcoded grid limits
+	// Hardcoded 5x5 grid limits
 	static final int minX = 0;
 	static final int minY = 0;
-	static final int maxX = 5;
-	static final int maxY = 5;
+	static final int maxX = 4;
+	static final int maxY = 4;
 
 	// State variables
 	private boolean mIsLost;
@@ -14,7 +14,7 @@ public class Robot {
 	private int mPosY;
 	private Orientation mOrientation;
 
-	// Orientation objects.
+	// Orientation values.
 	// These perform robot's movement and turning.
 	private enum Orientation {
 
@@ -40,6 +40,12 @@ public class Robot {
 			@Override
 			public void turnRight(Robot robot) {
 				robot.mOrientation = EAST;
+			}
+
+			// Answer "N"
+			@Override
+			public String toString() {
+				return "N";
 			}
 
 		},
@@ -68,6 +74,12 @@ public class Robot {
 				robot.mOrientation = SOUTH;
 			}
 
+			// Answer "E"
+			@Override
+			public String toString() {
+				return "E";
+			}
+
 		},
 
 		SOUTH {
@@ -92,6 +104,12 @@ public class Robot {
 			@Override
 			public void turnRight(Robot robot) {
 				robot.mOrientation = WEST;
+			}
+
+			// Answer "S"
+			@Override
+			public String toString() {
+				return "S";
 			}
 
 		},
@@ -120,19 +138,30 @@ public class Robot {
 				robot.mOrientation = NORTH;
 			}
 
+			// Answer "W"
+			@Override
+			public String toString() {
+				return "W";
+			}
+
 		};
 
-		// Make robot take a step forward
+		// Make robot take a step forward.
 		abstract public void stepForward(Robot robot);
 
-		// Make robot turn left by 90 degrees
+		// Make robot turn left by 90 degrees.
 		abstract public void turnLeft(Robot robot);
 
-		// Make robot turn right by 90 degrees
+		// Make robot turn right by 90 degrees.
 		abstract public void turnRight(Robot robot);
+
+		// Answer a string identification about the orientation.
+		abstract public String toString();
 
 	}
 
+	// Constructor.
+	// Robot is initialized at position (0, 0) (left bottom) facing North.
     public Robot() {
 		mPosX = 0;
 		mPosY = 0;
@@ -140,16 +169,51 @@ public class Robot {
 		mIsLost = false;
     }
 
+	// Answer if robot is lost.
 	public boolean isLost() {
 		return mIsLost;
 	}
 
+	// Answer a string representation of robot's position and orientation.
 	public String getPosition() {
-		return "(0, 0, N)";
+		return "(" + mPosX + ", " + mPosY + ", " + mOrientation.toString() + ")";
 	}
 
-	void execute(String command) {
-		mIsLost = true;
+	// Execute a sequence of move and turn commands.
+	//
+	// Parameter commands is a string comprised of letters:
+	// - 'M' (move)
+	// - 'L' (turn left)
+	// - 'R' (turn right)
+	// 
+	// Robot is declared lost if taken outside map limits.
+	// Robot is declared lost on receiving unknown commands.
+	void execute(String commands) {
+		for(char command : commands.toCharArray()) {
+			if (mIsLost) {
+				// Robot is lost.
+				// Cease execution of further commands.
+				return;
+			}
+			switch (command) {
+				case 'M':
+					// Move
+					mOrientation.stepForward(this);
+					break;
+				case 'L':
+					// Turn left
+					mOrientation.turnLeft(this);
+					break;
+				case 'R':
+					// Turn right
+					mOrientation.turnRight(this);
+					break;
+				default:
+					// Unknown command.
+					// Declare robot is lost.
+					mIsLost = true;
+			}
+		}
 	}
 
 }

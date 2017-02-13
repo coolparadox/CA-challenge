@@ -21,10 +21,10 @@ public class RobotController {
         return new Robot().getPosition();
     }
 
-    @RequestMapping(path="/rest/mars/{command}", method=RequestMethod.POST, produces="text/plain")
-    public @ResponseBody ResponseEntity<String> robotPostCommand(@PathVariable(value="command") final String command) {
+    @RequestMapping(path="/rest/mars/{commands}", method=RequestMethod.POST, produces="text/plain")
+    public @ResponseBody ResponseEntity<String> robotPostCommand(@PathVariable(value="commands") final String commands) {
 		Robot robot = new Robot();
-		robot.execute(command);
+		robot.execute(commands);
 		if (robot.isLost())
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		else
